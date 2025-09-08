@@ -1,0 +1,23 @@
+[project]
+name = "agentic-kg"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "iulia filimon",email = "iulia-maria.filimon@mhp.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "google-adk (>=1.13.0,<2.0.0)",
+    "litellm (>=1.76.0,<2.0.0)",
+    "neo4j (==5.28.1)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.30.1"
+
