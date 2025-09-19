@@ -8,7 +8,6 @@ from google.adk.agents import Agent
 from google.adk.sessions import InMemorySessionService, Session
 from google.adk.runners import Runner
 from typing import Optional, Dict, Any
-from google.adk import events
 
 # these expect to find a .env file at the directory above the lesson.                                                                                                                     # the format for that file is (without the comment)                                                                                                                                       #API_KEYNAME=AStringThatIsTheLongAPIKeyFromSomeService                                                                                                                                     
 def load_env():
@@ -20,11 +19,11 @@ def get_openai_api_key():
     return openai_api_key
 
 
-def get_neo4j_import_dir() -> str:
+def get_neo4j_import_dir():
     """Gets the neo4j import directory from an environment variable
     """
     load_env()
-    neo4j_import_dir = str(os.getenv("NEO4J_IMPORT_DIR"))
+    neo4j_import_dir = os.getenv("NEO4J_IMPORT_DIR")
     return neo4j_import_dir
 
 ### ADK runner wrapper ###
@@ -42,7 +41,7 @@ class AgentCaller:
     def get_session(self):
         return self.runner.session_service.get_session(app_name=self.runner.app_name, user_id=self.user_id, session_id=self.session_id)
 
-    async def call(self, query: str, verbose: bool = False, max_steps: int = 6):
+    async def call(self, query: str, verbose: bool = False):
         """Call the agent with a query and return the response."""
         print(f"\n>>> User Query: {query}")
 
@@ -53,11 +52,8 @@ class AgentCaller:
 
         # Key Concept: run_async executes the agent logic and yields Events.
         # We iterate through events to find the final answer.
-        step = 0
         async for event in self.runner.run_async(user_id=self.user_id, session_id=self.session_id, new_message=content):
             # You can uncomment the line below to see *all* events during execution
-            step += 1
-            print(f"Current step: {step}")
             if verbose:
                 print(f"  [Event] Author: {event.author}, Type: {type(event).__name__}, Final: {event.is_final_response()}, Content: {event.content}")
 
@@ -70,10 +66,6 @@ class AgentCaller:
                     final_response_text = f"Agent escalated: {event.error_message or 'No specific message.'}"
                 if event.author == self.agent.name:
                     break # Stop processing events once the final response is found
-            # if step >= max_steps:
-            #     print(f"[Agent] Stopping early after {max_steps} steps")
-            #     break
-                
 
         self.session = self.runner.session_service.get_session(app_name=self.runner.app_name, user_id=self.user_id, session_id=self.session_id)
 

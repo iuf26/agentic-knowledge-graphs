@@ -8,9 +8,13 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
 dependencies = [
-    "google-adk (>=1.13.0,<2.0.0)",
+    "google-adk (==1.5.0)",
     "litellm (>=1.76.0,<2.0.0)",
-    "neo4j (==5.28.1)"
+    "neo4j (==5.28.1)",
+    "langgraph (>=0.6.7,<0.7.0)",
+    "pillow (>=11.3.0,<12.0.0)",
+    "neo4j-graphrag (==1.8.0)",
+    "rapidfuzz (==3.13.0)",
 ]
 
 

@@ -11,11 +11,8 @@ from neo4j_for_adk import graphdb,tool_success, tool_error
 
 from helper import get_neo4j_import_dir
 
-def get_approved_user_goal(noop: str, tool_context: ToolContext):
-    """
-    Args:
-        noop: no op parameter
-    Returns the user's goal, which is a dictionary containing the kind of graph and its description."""
+def get_approved_user_goal(tool_context: ToolContext):
+    """Returns the user's goal, which is a dictionary containing the kind of graph and its description."""
     if "approved_user_goal" not in tool_context.state:
         return tool_error("approved_user_goal not set. Ask the user to clarify their goal (kind of graph and description).")  
     
@@ -23,11 +20,8 @@ def get_approved_user_goal(noop: str, tool_context: ToolContext):
 
     return tool_success("approved_user_goal", user_goal_data)
 
-def get_approved_files(noop: str, tool_context: ToolContext):
-    """
-    Args:
-        noop: no op parameter
-    Returns the files that have been approved for import."""
+def get_approved_files(tool_context: ToolContext):
+    """Returns the files that have been approved for import."""
     if "approved_files" not in tool_context.state:
         return tool_error("approved_files not set. Ask the user to approve the file suggestions.")
     
